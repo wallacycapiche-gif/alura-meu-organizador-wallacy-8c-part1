@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizador Wallacy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Elementos 3D Flutuantes no Fundo -->
+  <div class="bg-3d-scene">
+    <div class="shape-3d cube-1"></div>
+    <div class="shape-3d cube-2"></div>
+    <div class="shape-3d sphere-1"></div>
+    <div class="shape-3d pyramid-1"></div>
+    <div class="shape-3d ring-1"></div>
+  </div>
+
+  <div class="container">
+    <header class="app-header">
+      <h1>Organizador Wallacy</h1>
+      <p class="subtitle">Sua rotina e tarefas sob controle com estilo e produtividade</p>
+    </header>
+
+    <main class="dashboard-grid">
+      <!-- Seção de Tarefas -->
+      <section class="card glass-card tasks-section">
+        <h2><span class="icon">📋</span> Minha Lista de Tarefas</h2>
+        <div class="task-input-group">
+          <input type="text" id="taskInput" placeholder="Adicionar nova tarefa ou rotina...">
+          <button onclick="addTask()">Adicionar</button>
+        </div>
+        <ul id="taskList" class="task-list">
+          <li class="task-item">
+            <span>Revisar metas da semana</span>
+            <button class="delete-btn" onclick="this.parentElement.remove()">✕</button>
+          </li>
+          <li class="task-item completed">
+            <span>Organizar área de trabalho</span>
+            <button class="delete-btn" onclick="this.parentElement.remove()">✕</button>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Seção de Dicas e Modais -->
+      <section class="card glass-card tips-section">
+        <h2><span class="icon">💡</span> Dicas de Produtividade</h2>
+        <p class="tips-intro">Clique nos cards abaixo para abrir o destaque e ver o guia completo:</p>
+        
+        <div class="tips-grid">
+          <div class="tip-card" onclick="openModal('modal-pomodoro')">
+            <div class="tip-badge">Técnica</div>
+            <h3>Método Pomodoro</h3>
+            <p>Foco total em blocos de 25 minutos com pausas estratégicas.</p>
+            <span class="click-more">Ver detalhes →</span>
+          </div>
+
+          <div class="tip-card" onclick="openModal('modal-eisenhower')">
+            <div class="tip-badge">Estratégia</div>
+            <h3>Matriz Urgente vs Importante</h3>
+            <p>Saiba o que priorizar, delegar ou simplesmente eliminar.</p>
+            <span class="click-more">Ver detalhes →</span>
+          </div>
+
+          <div class="tip-card" onclick="openModal('modal-routine')">
+            <div class="tip-badge">Hábito</div>
+            <h3>Rotina Matinal de Alta Performance</h3>
+            <p>Comece o dia com clareza mental e energia total.</p>
+            <span class="click-more">Ver detalhes →</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modais de Dicas -->
+  <div id="modal-pomodoro" class="modal-overlay" onclick="closeModalOnOutside(event, 'modal-pomodoro')">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modal-pomodoro')">&times;</button>
+      <span class="modal-tag">Técnica de Foco</span>
+      <h2>Como aplicar o Método Pomodoro</h2>
+      <p>O método Pomodoro é uma ferramenta simples e eficiente para gerenciar seu tempo e manter o foco total:</p>
+      <ul>
+        <li><strong>1. Escolha uma tarefa:</strong> Defina o que será feito.</li>
+        <li><strong>2. Cronometre 25 minutos:</strong> Trabalhe com foco absoluto sem distrações.</li>
+        <li><strong>3. Faça uma pausa de 5 minutos:</strong> Desconecte-se rapidamente.</li>
+        <li><strong>4. A cada 4 ciclos:</strong> Faça uma pausa mais longa (15 a 30 minutos).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="modal-eisenhower" class="modal-overlay" onclick="closeModalOnOutside(event, 'modal-eisenhower')">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modal-eisenhower')">&times;</button>
+      <span class="modal-tag">Gerenciamento de Tempo</span>
+      <h2>A Matriz de Eisenhower</h2>
+      <p>Organize suas tarefas em 4 quadrantes para maximizar sua eficiência diária:</p>
+      <ul>
+        <li><strong>Urgente e Importante:</strong> Faça imediatamente.</li>
+        <li><strong>Importante, não Urgente:</strong> Agende um horário para fazer.</li>
+        <li><strong>Urgente, não Importante:</strong> Delegue se possível.</li>
+        <li><strong>Nem Urgente, nem Importante:</strong> Elimine do seu dia.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="modal-routine" class="modal-overlay" onclick="closeModalOnOutside(event, 'modal-routine')">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modal-routine')">&times;</button>
+      <span class="modal-tag">Hábitos Diários</span>
+      <h2>Rotina Matinal de Sucesso</h2>
+      <p>Pequenas ações nos primeiros 60 minutos do seu dia definem seu nível de energia e produtividade:</p>
+      <ul>
+        <li><strong>Hidratação:</strong> Beba água logo ao acordar para ativar o organismo.</li>
+        <li><strong>Sem Telas:</strong> Evite checar redes sociais nos primeiros 30 minutos.</li>
+        <li><strong>Planejamento:</strong> Liste as 3 tarefas principais que tornam o dia bem-sucedido.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function addTask() {
+      const input = document.getElementById('taskInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const li = document.createElement('li');
+      li.className = 'task-item';
+      li.innerHTML = `
+        <span>${text}</span>
+        <button class="delete-btn" onclick="this.parentElement.remove()">✕</button>
+      `;
+
+      li.querySelector('span').addEventListener('click', function() {
+        li.classList.toggle('completed');
+      });
+
+      document.getElementById('taskList').appendChild(li);
+      input.value = '';
+    }
+
+    document.querySelectorAll('.task-item span').forEach(span => {
+      span.addEventListener('click', function() {
+        this.parentElement.classList.toggle('completed');
+      });
+    });
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function closeModalOnOutside(event, id) {
+      if (event.target.id === id) {
+        closeModal(id);
+      }
+    }
+  </script>
+</body>
+</html>
